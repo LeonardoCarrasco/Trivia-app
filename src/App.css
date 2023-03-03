@@ -1,0 +1,15 @@
+.text-stroke{
+    -webkit-text-stroke-width: 20px;
+    -webkit-text-stroke-color: #87FF5C;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-stroke-black{
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: #0d0e0d;
+    color: white;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
