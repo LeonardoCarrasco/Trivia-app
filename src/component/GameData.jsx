@@ -1,4 +1,4 @@
-const GameData = ({ difficulty, totalQuestion, category }) => {
+const GameData = ({ difficulty, totalQuestion, category, next }) => {
     return (
       <div className='p-5'>
         <div className='mb-2 text-white/70'>
@@ -6,10 +6,10 @@ const GameData = ({ difficulty, totalQuestion, category }) => {
         </div>
         <div className='flex justify-between items-center'>
           <div>
-            <h4>Question 1<span className="text-gray-500 text-base">/{totalQuestion ? totalQuestion : ""}</span></h4>
+            <h4>Question {next +1}<span className="text-gray-500 text-base">/{totalQuestion ? totalQuestion : ""}</span></h4>
           </div>
           <div className='p-1 rounded-full border-white border'>
-            <span className='p-1'>10</span>
+            <span className='p-1'>20</span>
           </div>
         </div>
         <div className='text-base mt-8'>

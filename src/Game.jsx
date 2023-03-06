@@ -3,15 +3,27 @@ import GameData from './component/GameData'
 import Button from './component/Button'
 import Question from './component/Question'
 
-const URL = 'https://opentdb.com/api.php?amount=5&difficulty=easy'
+import GameOver from "./assets/gameover.png";
+import ButtonMain from "./component/ButtonMain";
+import Logo from "./component/Logo";
+import GameDisplay from './GameDisplay'
 
-const Game = () => {
+const URL = 'https://opentdb.com/api.php?amount=6&difficulty=easy'
+
+const Game = ({ setIsStart }) => {
+
     const [Questions, setQuestions] = useState(null)
+    const [next, setNext] = useState(0)
+    const [gameOver, setGameOver] = useState(false)
+
+    const getQuestions = async (URL) => {
+        const response = await fetch(URL)
+        const data = await response.json()
+        setQuestions(data.results)
+    }
 
     useEffect(() => {
-      fetch(URL)
-       .then(res => res.json())
-       .then(data => setQuestions(data.results))
+      getQuestions(URL)
     }, [])
 
     function arrayAnswers(array) {
@@ -23,23 +35,44 @@ const Game = () => {
         return arr
     }
 
-    return (
-        <div className='pt-14'>
-        {
-          Questions ?
-          <><GameData
-          difficulty={Questions[0].difficulty}
-          totalQuestion={Questions.length}
-          category={Questions[0].category}
-          />
-          <Question question={Questions[0].question}/></> : "" 
+    useEffect(() => {
+        if (Questions && next >= Questions.length -1) {
+          setGameOver(true)
         }
-        <div className='grid gap-5 grid-cols-2 grid-rows-2 max-w-3xl mx-auto mt-20'>
-          {
-            Questions ? arrayAnswers(Questions[0]).map((res, index) => <Button key={index} answer={res} />
-            ) : ""
-          }
-        </div>
+  
+    }, [next])
+   
+    const handleButtonClick = (res, setNext) => {
+      setNext(prev => prev + 1);
+      console.log(res)
+    }
+
+    return (
+        <div className='pt-14 px-6'>
+        {
+          gameOver ? 
+          <GameDisplay > 
+            <Logo src={GameOver}/> 
+            <ButtonMain text="Restart" setIsStart={setIsStart}/>
+          </GameDisplay> : 
+              Questions ?
+              <>
+                <GameData
+                  difficulty={Questions[next].difficulty}
+                  totalQuestion={Questions.length-1}
+                  category={Questions[next].category}
+                  next={next}
+                />
+                <Question question={Questions[next].question}/>
+                <div className='grid grid-cols-1 gap-5 md:grid-cols-2 md:grid-rows-2 max-w-3xl mx-auto mt-20'>
+                  {
+                    Questions ? arrayAnswers(Questions[next]).map((res, index) => <Button key={index} answer={res} onClick={()=> handleButtonClick(res, setNext)}/>
+                    ) : ""
+                  }
+                </div>             
+              </> 
+              : "" 
+        }
       </div>
     )
 }

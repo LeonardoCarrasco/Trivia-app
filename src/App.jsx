@@ -1,7 +1,11 @@
 import { useState } from "react";
 import './App.css'
-import Home from './Home'
+import GameDisplay from './GameDisplay'
 import Game from './Game'
+import ButtonMain from "./component/ButtonMain";
+import Logo from "./component/Logo";
+
+import TriviaApp from "./assets/tittle.png";
 
 function App() {
 
@@ -11,8 +15,14 @@ function App() {
     <div className="App bg-main-color text-white text-xl">
       <div className='container mx-auto h-screen'>
         {
-          !isStart ? <Home setIsStart={setIsStart}/> : <Game />
+          !isStart ? 
+            <GameDisplay >
+                <Logo src={TriviaApp}/>  
+                <ButtonMain text="Empezar" setIsStart={setIsStart}/>
+              </GameDisplay> 
+              : <Game setIsStart={setIsStart}/>
         }
+
       </div>
     </div>
   )

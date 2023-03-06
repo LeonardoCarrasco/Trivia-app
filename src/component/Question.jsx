@@ -1,7 +1,7 @@
 
 const Question = ({question}) => {
 
-  console.log(question.replace(/&quot;/g, '"'))
+  // console.log(question.replace(/&quot;/g, '"'))
     return (
       <div className='text-4xl text-center mb-10 mt-5 relative px-10'>
         <h1 className="leading-normal">
