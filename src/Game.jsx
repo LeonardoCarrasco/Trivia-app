@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react'
 import GameData from './component/GameData'
 import Button from './component/Button'
 import Question from './component/Question'
+import GameEndDisplay from './component/GameEndDisplay'
 
-import GameOver from "./assets/gameover.png";
-import ButtonMain from "./component/ButtonMain";
-import Logo from "./component/Logo";
-import GameDisplay from './GameDisplay'
+import logoGameOver from './assets/gameover.png'
+import logoGameWin from './assets/gamewin.png'
 
 const URL = 'https://opentdb.com/api.php?amount=6&difficulty=easy'
 
@@ -15,15 +14,26 @@ const Game = ({ setIsStart }) => {
     const [Questions, setQuestions] = useState(null)
     const [next, setNext] = useState(0)
     const [gameOver, setGameOver] = useState(false)
+    const [corrects, setCorrects] = useState(false)
+    const [gameWin, setGameWin] = useState(false)
 
     const getQuestions = async (URL) => {
         const response = await fetch(URL)
         const data = await response.json()
         setQuestions(data.results)
+        return data.results
     }
 
+    // console.log(Questions)
+
     useEffect(() => {
-      getQuestions(URL)
+
+        const set = async () =>{
+          const questions = await getQuestions(URL)
+          return questions
+        }
+        
+        set().then((questions) => setCorrects(Array(questions.length -1).fill(' ')))
     }, [])
 
     function arrayAnswers(array) {
@@ -35,26 +45,46 @@ const Game = ({ setIsStart }) => {
         return arr
     }
 
+
     useEffect(() => {
-        if (Questions && next >= Questions.length -1) {
+
+      if(corrects){
+        // console.log("corrects : ",corrects)
+        let countFalse = 0;
+        corrects.forEach(item => item === false ? countFalse++ : '')
+
+        if(!(countFalse ===2)){
+          if (countFalse >=2 && (Questions && next >= Questions.length -1)) {
+            setGameOver(true)
+          }
+          else if(countFalse <= 1 && (Questions && next >= Questions.length -1)){
+            setGameWin(true)
+          }
+        }
+        else{
           setGameOver(true)
         }
+
+      }
   
     }, [next])
    
     const handleButtonClick = (res, setNext) => {
+      const clone = [...corrects]
+      console.log("respueta elegida: ",res)
+      console.log("respueta correcta: ",Questions[next].correct_answer)
+      Questions[next].correct_answer === res ? clone[next]=true : clone[next]=false;
+      setCorrects(clone)
       setNext(prev => prev + 1);
-      console.log(res)
     }
 
     return (
-        <div className='pt-14 px-6'>
+        <div className='pt-14 px-6 h-screen'>
         {
           gameOver ? 
-          <GameDisplay > 
-            <Logo src={GameOver}/> 
-            <ButtonMain text="Restart" setIsStart={setIsStart}/>
-          </GameDisplay> : 
+              <GameEndDisplay setIsStart={setIsStart} logoSrc={logoGameOver} isWin={gameWin}/> : 
+              gameWin ? 
+                <GameEndDisplay setIsStart={setIsStart} logoSrc={logoGameWin} isWin={gameWin}/> : 
               Questions ?
               <>
                 <GameData
