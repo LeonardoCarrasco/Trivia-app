@@ -19,11 +19,11 @@ const GameEndDisplay = ({setIsStart, logoSrc, isWin})=>{
     const giveURL = ()=>{
     
         if (isWin) {
-            const GIF_URL = 'https://api.giphy.com/v1/gifs/search?api_key=2lpN3p8FFUb2OLiH7iq7dDK9qpPyVj92&q=you+win&limit=1&offset=0&rating=g&lang=en'
+            const GIF_URL = 'https://api.giphy.com/v1/gifs/search?api_key=2lpN3p8FFUb2OLiH7iq7dDK9qpPyVj92&q=you+win&limit=3&offset=1&rating=g&lang=en'
             return GIF_URL
         }
         else{
-            const GIF_URL = 'https://api.giphy.com/v1/gifs/search?api_key=2lpN3p8FFUb2OLiH7iq7dDK9qpPyVj92&q=you+lose&limit=1&offset=0&rating=g&lang=en'
+            const GIF_URL = 'https://api.giphy.com/v1/gifs/search?api_key=2lpN3p8FFUb2OLiH7iq7dDK9qpPyVj92&q=you+lose&limit=3&offset=1&rating=g&lang=en'
             return GIF_URL
         }
     
@@ -38,7 +38,7 @@ const GameEndDisplay = ({setIsStart, logoSrc, isWin})=>{
         <GameDisplay > 
             <Logo src={logoSrc}/> 
             {gif && 
-            <div className="w-96 mx-auto">
+            <div className="mx-auto max-w-screen-sm">
                 <img src={gif} alt={`an image of ${gif}`} className="w-full"/>
             </div>
             }

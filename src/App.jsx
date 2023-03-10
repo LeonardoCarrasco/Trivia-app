@@ -12,7 +12,7 @@ function App() {
   const [isStart, setIsStart] = useState(false)
 
   return (
-    <div className="App bg-main-color text-white text-xl">
+    <div className="App text-white text-xl">
       <div className='container mx-auto h-screen'>
         {
           !isStart ? 

@@ -3,7 +3,7 @@ import Socials from "./component/Socials"
 
 const GameDisplay = ({ children }) => {
     return (
-            <div className='flex flex-col justify-between h-full'>
+            <div className='flex flex-col justify-between h-screen'>
 
                 {children}
 
