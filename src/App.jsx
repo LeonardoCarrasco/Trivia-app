@@ -18,7 +18,7 @@ function App() {
           !isStart ? 
             <GameDisplay >
                 <Logo src={TriviaApp}/>  
-                <ButtonMain text="Empezar" setIsStart={setIsStart}/>
+                <ButtonMain text="Start" setIsStart={setIsStart}/>
               </GameDisplay> 
               : <Game setIsStart={setIsStart}/>
         }
