@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+
 import GameData from './component/GameData'
 import Button from './component/Button'
 import Question from './component/Question'
@@ -7,42 +7,16 @@ import GameEndDisplay from './component/GameEndDisplay'
 import logoGameOver from './assets/gameover.png'
 import logoGameWin from './assets/gamewin.png'
 
-import set from './component/setter'
 import useQuestions from './hooks/useQuestions'
+import useGameState from './hooks/useGameState'
 
-const URL = 'https://opentdb.com/api.php?'
 
-const easy  = 'amount=6&difficulty=easy';
-const medium = 'amount=11&difficulty=medium';
-const hard = 'amount=16&difficulty=hard';
 
 const Game = ({ setIsStart }) => {
 
-    const [next, setNext] = useState(0)
-    const [gameOver, setGameOver] = useState(false)
-    const [gameWin, setGameWin] = useState(false)
-    const [difficulty, setDifficulty] = useState('easy')
-
     const [Questions, setQuestions, corrects, setCorrects] = useQuestions()
+    const [next, setNext, gameOver, gameWin, difficulty] = useGameState(corrects, setCorrects, Questions, setQuestions)
     console.log(Questions)
-
-
-    const nextDifficulty = (difficulty) => {
-
-
-      if (difficulty === 'easy') {
-        set(medium, URL).then((data) => {
-          setQuestions(data)
-          setCorrects(Array(data.length -1).fill(' '))
-        })
-      }
-      else if(difficulty === 'medium'){
-        set(hard, URL).then((data) => {
-          setQuestions(data)
-          setCorrects(Array(data.length -1).fill(' '))
-        })
-      }      
-    }
 
     function arrayAnswers(array) {
       
@@ -52,46 +26,6 @@ const Game = ({ setIsStart }) => {
       
         return arr
     }
-
-
-    useEffect(() => {
-
-      if(corrects){
-
-        let countFalse = 0;
-        corrects.forEach(item => item === false ? countFalse++ : '')
-
-        if(!(countFalse ===3)){
-          if(countFalse <= 1 && (Questions && next >= Questions.length -1)){
-            setGameWin(true)
-          }
-        }
-        else{
-          setGameOver(true)
-        }
-
-      }
-  
-    }, [next])
-
-
-    useEffect(() => {
-      if(gameWin){
-        setQuestions(null)
-        setNext(0)
-        setCorrects(false)
-        if(difficulty === 'easy'){
-          setDifficulty('medium')
-          setGameWin(false)
-        }
-        else if(difficulty === 'medium'){
-          setDifficulty('hard')
-          setGameWin(false)
-        }
-
-        nextDifficulty(difficulty);
-      }
-    },[gameWin])
    
     const handleButtonClick = (res, setNext) => {
       const clone = [...corrects]

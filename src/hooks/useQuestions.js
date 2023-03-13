@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
-import set from "../component/setter"
+import set from '../component/setter'
 
 const useQuestions = () => {
+  
     const [Questions, setQuestions] = useState(null)
     const [corrects, setCorrects] = useState(false)
   
