@@ -7,6 +7,9 @@ import GameEndDisplay from './component/GameEndDisplay'
 import logoGameOver from './assets/gameover.png'
 import logoGameWin from './assets/gamewin.png'
 
+import set from './component/setter'
+import useQuestions from './hooks/useQuestions'
+
 const URL = 'https://opentdb.com/api.php?'
 
 const easy  = 'amount=6&difficulty=easy';
@@ -15,51 +18,31 @@ const hard = 'amount=16&difficulty=hard';
 
 const Game = ({ setIsStart }) => {
 
-    const [Questions, setQuestions] = useState(null)
     const [next, setNext] = useState(0)
     const [gameOver, setGameOver] = useState(false)
-    const [corrects, setCorrects] = useState(false)
     const [gameWin, setGameWin] = useState(false)
     const [difficulty, setDifficulty] = useState('easy')
 
-    const getQuestions = async (URL) => {
+    const [Questions, setQuestions, corrects, setCorrects] = useQuestions()
+    console.log(Questions)
 
-      try{
-        const response = await fetch(URL)
-        const data = await response.json()
-        setQuestions(data.results)
-        return data.results
-      }
-      catch(error){
-        console.log(error)
-      }
-
-    }
 
     const nextDifficulty = (difficulty) => {
 
-      const set = async (diff) =>{
-        const questions = await getQuestions(URL + diff)
-        return questions
-      }
 
       if (difficulty === 'easy') {
-        set(medium).then((questions) => setCorrects(Array(questions.length -1).fill(' ')))
+        set(medium, URL).then((data) => {
+          setQuestions(data)
+          setCorrects(Array(data.length -1).fill(' '))
+        })
       }
       else if(difficulty === 'medium'){
-        set(hard).then((questions) => setCorrects(Array(questions.length -1).fill(' ')))
+        set(hard, URL).then((data) => {
+          setQuestions(data)
+          setCorrects(Array(data.length -1).fill(' '))
+        })
       }      
     }
-
-    useEffect(() => {
-
-        const set = async () =>{
-          const questions = await getQuestions(URL + easy)
-          return questions
-        }
-        
-        set().then((questions) => setCorrects(Array(questions.length -1).fill(' ')))
-    }, [])
 
     function arrayAnswers(array) {
       
@@ -78,7 +61,7 @@ const Game = ({ setIsStart }) => {
         let countFalse = 0;
         corrects.forEach(item => item === false ? countFalse++ : '')
 
-        if(!(countFalse ===2)){
+        if(!(countFalse ===3)){
           if(countFalse <= 1 && (Questions && next >= Questions.length -1)){
             setGameWin(true)
           }
