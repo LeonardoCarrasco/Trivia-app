@@ -16,7 +16,6 @@ const Game = ({ setIsStart }) => {
 
     const [Questions, setQuestions, corrects, setCorrects] = useQuestions()
     const [next, setNext, gameOver, gameWin, difficulty] = useGameState(corrects, setCorrects, Questions, setQuestions)
-    console.log(Questions)
 
     function arrayAnswers(array) {
       
