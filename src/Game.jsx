@@ -1,4 +1,4 @@
-
+import { useState } from 'react'
 import GameData from './component/GameData'
 import Button from './component/Button'
 import Question from './component/Question'
@@ -9,13 +9,14 @@ import logoGameWin from './assets/gamewin.png'
 
 import useQuestions from './hooks/useQuestions'
 import useGameState from './hooks/useGameState'
-
+import Spinner from './component/Spinner'
 
 
 const Game = ({ setIsStart }) => {
 
-    const [Questions, setQuestions, corrects, setCorrects] = useQuestions()
-    const [next, setNext, gameOver, gameWin, difficulty] = useGameState(corrects, setCorrects, Questions, setQuestions)
+  const [isLoading, setIsLoading] = useState(false)
+  const [Questions, setQuestions, corrects, setCorrects] = useQuestions(setIsLoading)
+  const [next, setNext, gameOver, gameWin, difficulty] = useGameState(corrects, setCorrects, Questions, setQuestions, setIsLoading)
 
     function arrayAnswers(array) {
       
@@ -35,7 +36,9 @@ const Game = ({ setIsStart }) => {
 
     return (
         <div className='pt-12 px-6 flex flex-col'>
+        
         {
+          isLoading ? <Spinner/> : 
           gameOver ? 
               <GameEndDisplay setIsStart={setIsStart} logoSrc={logoGameOver} isWin={gameWin}/> : 
               gameWin && difficulty === 'hard' ? 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import set from '../component/setter'
 
-const useGameState = (corrects, setCorrects, Questions, setQuestions) => {
+const useGameState = (corrects, setCorrects, Questions, setQuestions, setLoading) => {
 
     const medium = 'amount=11&difficulty=medium';
     const hard = 'amount=16&difficulty=hard';
@@ -12,18 +12,20 @@ const useGameState = (corrects, setCorrects, Questions, setQuestions) => {
     const [difficulty, setDifficulty] = useState('easy')
 
     const nextDifficulty = (difficulty) => {
-
+        setLoading(true)
 
         if (difficulty === 'easy') {
           set(medium).then((data) => {
             setQuestions(data)
             setCorrects(Array(data.length -1).fill(' '))
+            setLoading(false)
           })
         }
         else if(difficulty === 'medium'){
           set(hard).then((data) => {
             setQuestions(data)
             setCorrects(Array(data.length -1).fill(' '))
+            setLoading(false)
           })
         }      
       }
@@ -35,7 +37,7 @@ const useGameState = (corrects, setCorrects, Questions, setQuestions) => {
           let countFalse = 0;
           corrects.forEach(item => item === false ? countFalse++ : '')
   
-          if(!(countFalse ===3)){
+          if(!(countFalse ===2)){
             if(countFalse <= 1 && (Questions && next >= Questions.length -1)){
               setGameWin(true)
             }
