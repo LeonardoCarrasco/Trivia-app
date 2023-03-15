@@ -3,7 +3,7 @@ import { FaTimes } from 'react-icons/fa'
 const Modal = ({handleShow}) => {
 
     return (
-        <div className="bg-black absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 md:max-w-[500px] py-6 px-10 w-full shadow-2xl">
+        <div className="bg-[#030303] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 md:max-w-[500px] py-6 px-10 w-full shadow-2xl">
             <button className="block ml-auto" onClick={handleShow}><FaTimes/></button>
 
             <div className="p-2">

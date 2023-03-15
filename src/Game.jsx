@@ -16,7 +16,7 @@ const Game = ({ setIsStart }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [Questions, setQuestions, corrects, setCorrects] = useQuestions(setIsLoading)
-  const [next, setNext, gameOver, gameWin, difficulty] = useGameState(corrects, setCorrects, Questions, setQuestions, setIsLoading)
+  const [next, setNext, gameOver, setGameOver, gameWin, difficulty] = useGameState(corrects, setCorrects, Questions, setQuestions, setIsLoading)
 
     function arrayAnswers(array) {
       
@@ -50,6 +50,7 @@ const Game = ({ setIsStart }) => {
                   totalQuestion={Questions.length-1}
                   category={Questions[next].category}
                   next={next}
+                  setGameOver={setGameOver}
                 />
                 <Question question={Questions[next].question}/>
                 <div className='grid grid-cols-1 gap-5 md:grid-cols-2 md:grid-rows-2 max-w-3xl mx-auto my-8 lg:my-20'>

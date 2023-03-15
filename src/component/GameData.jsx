@@ -1,4 +1,24 @@
-const GameData = ({ difficulty, totalQuestion, category, next }) => {
+import { useState, useEffect } from "react";
+const GameData = ({ difficulty, totalQuestion, category, next, setGameOver }) => {
+
+  const [counter, setCounter] = useState(difficulty === 'easy' ? 20 : difficulty === 'medium' ? 15 : difficulty === 'hard' ? 10 : 0);
+
+  useEffect(() => {
+
+    const interval = setInterval(() => {
+     if (!(0 === counter)) {
+      setCounter(prevcount => prevcount -1)
+     }
+     else{
+      clearInterval(interval)
+      setGameOver(true)
+     }
+    },1000)
+
+    return () => clearInterval(interval);
+    
+  }, [counter])
+
     return (
       <div className='p-5'>
         <div className='mb-2 text-white/70'>
@@ -13,7 +33,7 @@ const GameData = ({ difficulty, totalQuestion, category, next }) => {
             <h4>Question {next +1}<span className="text-gray-500 text-base">/{totalQuestion ? totalQuestion : ""}</span></h4>
           </div>
           <div className='p-1 rounded-full border-white border'>
-            <span className='p-1'>20</span>
+            <span className='p-1'>{counter}</span>
           </div>
         </div>
         <div className='text-base mt-8'>

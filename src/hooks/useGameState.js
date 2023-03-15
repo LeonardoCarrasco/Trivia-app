@@ -68,7 +68,7 @@ const useGameState = (corrects, setCorrects, Questions, setQuestions, setLoading
         }
       },[gameWin])
 
-      return [next, setNext, gameOver, gameWin, difficulty]
+      return [next, setNext, gameOver, setGameOver, gameWin, difficulty]
 }
 
 export default useGameState
