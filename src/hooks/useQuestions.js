@@ -5,6 +5,7 @@ const useQuestions = (setLoading) => {
   
     const [Questions, setQuestions] = useState(null)
     const [corrects, setCorrects] = useState(false)
+    console.log(Questions)
     
     useEffect(() => {
       setLoading(true)

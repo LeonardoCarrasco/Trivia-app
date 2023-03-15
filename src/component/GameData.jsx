@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
+
 const GameData = ({ difficulty, totalQuestion, category, next, setGameOver }) => {
 
   const [counter, setCounter] = useState(difficulty === 'easy' ? 20 : difficulty === 'medium' ? 15 : difficulty === 'hard' ? 10 : 0);
+
+  useEffect(() => {
+    setCounter(difficulty === 'easy' ? 20 : difficulty === 'medium' ? 15 : difficulty === 'hard' ? 10 : 0);
+  }, [next])
+
 
   useEffect(() => {
 
@@ -16,7 +22,7 @@ const GameData = ({ difficulty, totalQuestion, category, next, setGameOver }) =>
     },1000)
 
     return () => clearInterval(interval);
-    
+
   }, [counter])
 
     return (
